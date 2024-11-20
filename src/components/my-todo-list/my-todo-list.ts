@@ -53,39 +53,16 @@ export class MyTodoList extends LitElement {
 
   @state() private _activeFilter: FilterName = 'all';
 
-  private _setFilter(filter: FilterName) {
-    this._activeFilter = filter;
-  }
-
-  private _getFilteredTasks() {
-    return this.tasks.filter(
-      this._filters.find((f) => f.name === this._activeFilter)!.filterFn
-    );
-  }
-
-  private _getActiveTasks() {
-    return this.tasks.filter((task) => !task.completed);
-  }
-
-  private _getCompletedTasks() {
-    return this.tasks.filter((task) => task.completed);
-  }
-
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener('hashchange', this._onHashChange.bind(this));
+
+    this._onHashChange();
   }
 
   disconnectedCallback() {
     window.removeEventListener('hashchange', this._onHashChange.bind(this));
     super.disconnectedCallback();
-  }
-
-  private _onHashChange() {
-    const hash = window.location.hash.replace('#/', '');
-    if (['all', 'active', 'completed'].includes(hash)) {
-      this._setFilter(hash as FilterName);
-    }
   }
 
   protected render() {
@@ -124,6 +101,31 @@ export class MyTodoList extends LitElement {
         }
       </div>
     </div>`;
+  }
+
+  private _getFilteredTasks() {
+    return this.tasks.filter(
+      this._filters.find((f) => f.name === this._activeFilter)!.filterFn
+    );
+  }
+
+  private _getActiveTasks() {
+    return this.tasks.filter((task) => !task.completed);
+  }
+
+  private _getCompletedTasks() {
+    return this.tasks.filter((task) => task.completed);
+  }
+
+  private _setFilter(filter: FilterName) {
+    this._activeFilter = filter;
+  }
+
+  private _onHashChange() {
+    const hash = window.location.hash.replace('#/', '');
+    if (['all', 'active', 'completed'].includes(hash)) {
+      this._setFilter(hash as FilterName);
+    }
   }
 
   private _createNewTask(event: CustomEvent) {
