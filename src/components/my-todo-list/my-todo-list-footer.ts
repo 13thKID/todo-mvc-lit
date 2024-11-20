@@ -81,7 +81,18 @@ export class MyTodoListFooter extends LitElement {
     .filters li a:focus {
       box-shadow: var(--focus-shadow, 0 0 2px 2px #cf7d7d);
       outline: 0;
-    } 
+    }
+
+    @media (max-width: 550px) {
+      .filters {
+        position: absolute;
+        bottom: 10px;
+      }
+
+      .footer {
+        padding: 10px 15px 40px 15px;
+      }
+    }
   `;
 
   protected render() {

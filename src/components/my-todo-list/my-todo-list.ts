@@ -12,11 +12,15 @@ import './my-todo-list-header.ts';
 @customElement('my-todo-list')
 export class MyTodoList extends LitElement {
   static styles = css`
+    :host {
+      width: 100%;
+      margin: 0 20px;
+    }
+
     .my-todo-list__card {
       background: #fff;
       position: relative;
       box-shadow: 0 2px 4px #0003, 0 25px 50px #0000001a;
-      width: 550px;
     }
 
     ul {
@@ -27,9 +31,9 @@ export class MyTodoList extends LitElement {
   `;
 
   @property({ type: Array }) tasks: Task[] = [
-    // { id: '1', title: 'Task 1', completed: false },
-    // { id: '2', title: 'Task 2', completed: true },
-    // { id: '3', title: 'Task 3', completed: false },
+    { id: '1', title: 'Task 1', completed: false },
+    { id: '2', title: 'Task 2', completed: true },
+    { id: '3', title: 'Task 3', completed: false },
   ];
 
   @state() private _filters: Filter[] = [
@@ -65,6 +69,23 @@ export class MyTodoList extends LitElement {
 
   private _getCompletedTasks() {
     return this.tasks.filter((task) => task.completed);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('hashchange', this._onHashChange.bind(this));
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('hashchange', this._onHashChange.bind(this));
+    super.disconnectedCallback();
+  }
+
+  private _onHashChange() {
+    const hash = window.location.hash.replace('#/', '');
+    if (['all', 'active', 'completed'].includes(hash)) {
+      this._setFilter(hash as FilterName);
+    }
   }
 
   protected render() {

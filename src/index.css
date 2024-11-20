@@ -1,8 +1,7 @@
 :root {
   --color-primary: #b83f45;
   
-  /* --focus-shadow-color: #cf7d7d; */
-  --focus-shadow-color: #26e718;
+  --focus-shadow-color: #cf7d7d;
   --focus-shadow: 0 0 2px 2px var(--focus-shadow-color);
 }
 
@@ -24,6 +23,7 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+  width: 100%;
 }
 
 .new-todo input {
